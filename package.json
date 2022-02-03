@@ -1,0 +1,24 @@
+{
+  "name": "swiftline",
+  "version": "1.0.0",
+  "description": "Instagram clone",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TXTstyle/SwiftLine.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/TXTstyle/SwiftLine/issues"
+  },
+  "homepage": "https://github.com/TXTstyle/SwiftLine#readme",
+  "dependencies": {
+    "express": "^4.17.2",
+    "nodemon": "^2.0.15"
+  }
+}
