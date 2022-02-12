@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SwiftLine</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="icon" href="img/favicon.ico" sizes="any" type="image/x-icon">
+    <% if(options.dark == true) { %> 
+        <script src="./js/dark.js" defer></script>
+        <% } %>
+</head>
+<body>
+    <div class="body">
+        <div class="left-side"> <a href="./">
+            <svg viewbox="0 0 96 96" xmlns="http://www.w3.org/2000/svg">
+                <g>
+                 <title>Layer 1</title>
+                 <path id="svg_1" d="m48,95c-25.96685,0 -47,-21.03315 -47,-47c0,-25.96685 21.03315,-47 47,-47c25.96685,0 47,21.03315 47,47c0,25.96685 -21.03315,47 -47,47z" opacity="undefined" stroke-width="0" stroke="#000000" fill="#008080"/>
+                 <path id="svg_2" d="m67.95628,16.04371" opacity="NaN" stroke="#000000" fill="#008080"/>
+                 <path id="svg_4" d="m47.84699,12.32787c-46.88524,-0.65574 -47.10382,35.84699 0.21858,35.84699c47.3224,0 46.63023,37.12204 0.43716,36.50273l-0.65574,-72.34972z" opacity="NaN" stroke-width="0" stroke="#000000" fill="#4cb0af"/>
+                 <path id="svg_5" d="m48.17486,7.08197l0,81.96721" opacity="undefined" stroke="#005354" fill="none"/>
+                </g>
+               
+               </svg> </a>
+            <div class="nav-list">
+                <a href="">Home</a>
+                <a href="">Follow</a>
+                <a href="">About</a>
+                <a href="">Settings</a>
+            </div>
+            <a href="/user/<%= user.username %> "><img src="./img/avatars/<%= user.avatar %> " alt="Avatar" class="Avatar avatar-left"></a>
+        </div>
+        <div class="center">
+             <div class="top-banner"><h1>Home</h1></div>
+             <div class="new-post">
+                <img src="./img/avatars/<%= user.avatar %>" alt="Avatar" class="Avatar avatar-new">
+                 <h4>Post Something?</h4>
+                 <a href="./new">Swift</a>
+             </div>
+             <div class="feed">
+                <% if(posts.length > 0) { %> 
+                    <%- include('./post'); %> 
+                <% } else { %>
+                    <div class="post">
+                        <h2>Empty feed</h2>
+                        <h3>Follow people to fill this up.</h3>
+                    </div>
+                <% } %> 
+             </div>
+             <div class="load-more">
+                <% if(posts.length > 10) { %> 
+                    <a id="load-more-btn" href="./">Load More...</a>
+                <% } %>
+             </div>
+        </div>
+        <div class="right-side">
+            <div class="search">
+                <form action="/user/s" method="post">
+                    <input type="text" name="search" id="search-input" placeholder="Search" required minlength="3" maxlength="15">
+                    <input type="submit" value="?" id="search-submit">
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

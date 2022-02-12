@@ -1,0 +1,15 @@
+<% posts.forEach(element => { %>
+    <div class="post">
+        <div class="post-user">
+            <a href="/user/<%= element.username %> "><img src="/img/avatars/<%= element.avatar %> " alt="" class="post-avatar"></a>
+            <span>
+               <h5><a href="/user/<%= element.username %> "><%= element.name %></a></h5>
+               <h6><a href="/user/<%= element.username %> ">@<%= element.username %></a></h6>
+            </span>
+        </div>
+        <div class="post-text"><p><%= element.text %> </p></div>
+        <div class="post-img">
+            <img src="/img/posts/<%= element.image %> " alt="" class="post-img">
+        </div>
+    </div>
+<% }) %>
