@@ -7,13 +7,13 @@
     <title>SwiftLine</title>
     <link rel="stylesheet" href="/css/style.css">
     <link rel="icon" href="/img/favicon.ico" sizes="any" type="image/x-icon">
-    <% if(options.dark == true) { %> 
+    <% if(options == true) { %> 
         <script src="/js/dark.js" defer></script>
         <% } %>
 </head>
 <body>
     <div class="body">
-        <div class="left-side"> <a href="./">
+        <div><div class="left-side"> <a href="./">
             <svg viewbox="0 0 96 96" xmlns="http://www.w3.org/2000/svg">
                 <g>
                  <title>Layer 1</title>
@@ -28,10 +28,10 @@
                 <a href="/">Home</a>
                 <a href="">Follow</a>
                 <a href="">About</a>
-                <a href="">Settings</a>
+                <a href="/settings">Settings</a>
             </div>
             <a href="/user/<%= mainUser.username %> "><img src="/img/avatars/<%= mainUser.avatar %> " alt="Avatar" class="Avatar avatar-left"></a>
-        </div>
+        </div></div>
         <div class="center">
              <div class="top-banner"><h1><%= user.name %> </h1></div>
              <div class="new-post banner">
@@ -66,14 +66,14 @@
                 <% } %>
              </div>
         </div>
-        <div class="right-side">
+        <div><div class="right-side">
             <div class="search">
-                <form action="" method="post">
+                <form action="/user/s" method="post">
                     <input type="text" name="search" id="search-input" placeholder="Search" required minlength="3" maxlength="15">
                     <input type="submit" value="?" id="search-submit">
                 </form>
             </div>
-        </div>
+        </div></div>
     </div>
 </body>
 </html>

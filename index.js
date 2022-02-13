@@ -5,6 +5,7 @@ if (process.env.NODE_ENV !== 'production') {
 const express = require("express");
 const multer = require('multer')
 const app = express();
+const fs = require('fs');
 
 const bcrypt = require('bcrypt');
 const flash = require('express-flash');
@@ -26,8 +27,8 @@ initialize(passport,
 
 
 const userRouter = require('./routes/user');
-const storage = require('./storage')
-const resize = require('./sharpImg');
+const storage = require('./storage');
+const sharpImg = require('./sharpImg');
 
 const uploadPost = multer({storage: storage('/posts/')})
 const uploadBanner = multer({storage: storage('/banners/')})
@@ -54,14 +55,14 @@ app.use('/user', userRouter)
 
 //  Root
 app.get('/', mw.CheckNoAuth, mw.GetFollow, mw.GetDB, async (req,res) => { 
-    res.render('./index', {posts: res.posts, user: req.user, options: {dark: true}})
+    res.render('./index', {posts: res.posts, user: req.user, options: req.user.options})
 });
 
 
 // Post
 app.post('/new', uploadPost.single('image1'), async (req, res) => {
     const user = await myDB.FindUser(req.user.username);
-    resize(`posts/${req.file.filename}`);
+    sharpImg.resize(`posts/${req.file.filename}`);
     console.log(req.body.text1, user.id, req.file.filename);
 
     await myDB.NewPost(req.body.text1, user.id, req.file.filename)
@@ -70,9 +71,40 @@ app.post('/new', uploadPost.single('image1'), async (req, res) => {
 
 app.get('/new', mw.CheckNoAuth, (req, res) => {
     //console.log(req.user.avatar)
-    res.render('./new', {user: req.user, options: {dark: true}});
+    res.render('./new', {user: req.user, options: req.user.options});
 })
 
+// Settings
+
+app.get('/settings', mw.CheckNoAuth, (req, res) => {
+    res.render('./settings', {user: req.user, options: req.user.options});
+})
+
+app.post('/banner', mw.DelBanner, uploadBanner.single('banner1'), async (req, res) => {
+    const user = await myDB.FindUser(req.user.username);
+    sharpImg.cropBanner(`banners/${req.file.filename}`);
+
+    await myDB.NewBanner(user.id, req.file.filename)
+    res.redirect('/');
+})
+
+app.post('/avatar', mw.DelAvatar, uploadAvatar.single('avatar1'), async (req, res) => {
+    const user = await myDB.FindUser(req.user.username);
+    sharpImg.cropAvatar(`avatars/${req.file.filename}`);
+
+    await myDB.NewAvatar(user.id, req.file.filename)
+    res.redirect('/');
+})
+
+app.post('/settings', (req, res) => {
+    const un = req.body.dark1;
+    if (un == 'on') {
+        myDB.NewOptions(req.user.username, 1);
+    } else {
+        myDB.NewOptions(req.user.username, 0);
+    }
+    res.redirect('/');
+})
 
 //  Login
 app.get('/login', mw.CheckAuth, (req, res) => {

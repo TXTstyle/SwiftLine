@@ -1,4 +1,5 @@
 const myDB = require('./DB');
+const fs = require('fs');
 
 function CheckAuth(req, res, next) {
     if(req.isAuthenticated()) {
@@ -25,8 +26,12 @@ async function GetDB(req, res, next) {
 
 async function GetUserPosts(req, res, next) {
     const user = await myDB.FindUser(req.params.user); 
-    res.withFollow = true;
-    res.follows = user.id;
+    if (user) {
+        res.withFollow = true;
+        res.follows = user.id;
+    }else {
+        res.withFollow = false;
+    }
     return next();
 }
 
@@ -49,4 +54,18 @@ async function GetFollow(req, res, next) {
     return next();
 }
 
-module.exports = {CheckAuth, CheckNoAuth, GetDB, GetFollow, GetUserPosts};
+function DelBanner(req, res, next) {
+    if (req.user.banner != 'banner.svg') {
+        fs.unlinkSync(`./public/img/banners/${req.user.banner}`);
+    }
+    return next();
+}
+
+function DelAvatar(req, res, next) {
+    if (req.user.banner != 'avatar.svg') {
+        fs.unlinkSync(`./public/img/avatars/${req.user.avatar}`);
+    }
+    return next();
+}
+
+module.exports = {CheckAuth, CheckNoAuth, GetDB, GetFollow, GetUserPosts, DelBanner, DelAvatar};

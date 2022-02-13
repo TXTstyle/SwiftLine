@@ -50,6 +50,42 @@ async function NewFollow(username, follows) {
     }
 }
 
+async function NewBanner(userId, banner) {
+    try {     
+        let conn = await pool.getConnection();
+        let rows = await conn.query(`update users set banner='${banner}' where id='${userId}'`);
+        //console.log(rows[0].email);
+        conn.release();
+        return;
+    } catch (err) {
+        throw err;
+    }
+}
+
+async function NewAvatar(userId, avatar) {
+    try {     
+        let conn = await pool.getConnection();
+        let rows = await conn.query(`update users set avatar='${avatar}' where id='${userId}'`);
+        //console.log(rows[0].email);
+        conn.release();
+        return;
+    } catch (err) {
+        throw err;
+    }
+}
+
+async function NewOptions(username, bool) {
+    try {     
+        let conn = await pool.getConnection();
+        let rows = await conn.query(`update users set options='${bool}' where username='${username}'`);
+        //console.log(rows[0].email);
+        conn.release();
+        return;
+    } catch (err) {
+        throw err;
+    }
+}
+
 async function GetUsernames() {
     try {     
         let conn = await pool.getConnection();
@@ -118,4 +154,4 @@ async function NewUser(username, name, password) {
     }
 }
 
-module.exports = {DB, GetUsernames, FindUser, FindUserId, GetPostN, GetFollows, NewPost, NewUser, NewFollow};
+module.exports = {DB, GetUsernames, FindUser, FindUserId, GetPostN, GetFollows, NewPost, NewUser, NewFollow, NewBanner, NewAvatar, NewOptions};

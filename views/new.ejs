@@ -7,13 +7,13 @@
     <title>SwiftLine: New Swift</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="icon" href="img/favicon.ico" sizes="any" type="image/x-icon">
-    <% if(options.dark == true) { %> 
+    <% if(options == true) { %> 
         <script src="./js/dark.js" defer></script>
         <% } %>
 </head>
 <body>
     <div class="body">
-        <div class="left-side"> <a href="./">
+        <div><div class="left-side"> <a href="./">
             <svg viewbox="0 0 96 96" xmlns="http://www.w3.org/2000/svg"> 
                 <g>
                  <title>Layer 1</title>
@@ -23,16 +23,16 @@
                  <path id="svg_5" d="m48.17486,7.08197l0,81.96721" opacity="undefined" stroke="#005354" fill="none"/>
                 </g>
                </svg> </a>
-        </div>
+        </div></div>
         <div class="center">
              <div class="top-banner"><h1>New Swift</h1></div>
              <div class="feed">
                 <form class="new-post swift" method="post" enctype="multipart/form-data" action="/new">
                     <img src="./img/avatars/<%= user.avatar %>" alt="Avatar" class="Avatar">
                     <input type="text" name="text1" id="text1" placeholder="Say something?" required minlength="3" maxlength="250">
-                    <input type="submit" value="Swift" id="swift1">
-                    <label> Upload Image
-                        <input type="file" name="image1" id="file1" required>
+                    <input type="submit" value="Swift" class="swift1">
+                    <label class="upload-label"> Upload Image
+                        <input type="file" name="image1" class="file1" required>
                     </label>
                 </form>
              </div>

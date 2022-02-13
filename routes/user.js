@@ -17,13 +17,13 @@ router.get('/:user', mw.CheckNoAuth, mw.GetUserPosts, mw.GetDB, async (req, res)
     
     let isFollowing = false;
     for (let i = 0; i < following.F.length; i++) {
-        if (following.F[i] == user.id) {
+        if (res.withFollow && following.F[i] == user.id) {
             isFollowing = true;
         }
         
     }
     if (res.posts.length <= 0) {
-        res.posts = [{text: 'This user has no posts', username: '', id: 1, userId: null}];
+        res.posts = [{text: 'This user has no posts', username: req.user.username, name: user.name, avatar: user.avatar}];
     }
     const findU = users.filter( u => u.username == req.params.user);
     if (findU.length > 0) {
@@ -31,9 +31,10 @@ router.get('/:user', mw.CheckNoAuth, mw.GetUserPosts, mw.GetDB, async (req, res)
         const N = {
         }
         
-        res.render('../views/user', {posts: res.posts, user: user, following: isFollowing, mainUser: req.user, options: {dark: true}})   
+        res.render('../views/user', {posts: res.posts, user: user, following: isFollowing, mainUser: req.user, options: req.user.options})   
     }else {
-        res.render('./error', {error: 'User not found.'})
+        req.flash('error', 'Not a username.');
+        res.redirect('/');
     }
 })
 
