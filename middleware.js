@@ -16,10 +16,11 @@ function CheckNoAuth(req, res, next) {
 }
 
 async function GetDB(req, res, next) {
-    let queryId;
-    if(!req.query.page) {
-        queryId = 1;
+    let queryId = 1;
+    if(req.query.page) {
+        queryId = req.query.page;
     }
+    //console.log(queryId, req.query.page);
     res.posts = await myDB.DB(queryId, res.withFollow, res.follows);
     return next();
 }
@@ -62,7 +63,7 @@ function DelBanner(req, res, next) {
 }
 
 function DelAvatar(req, res, next) {
-    if (req.user.banner != 'avatar.svg') {
+    if (req.user.avatar != 'avatar.svg') {
         fs.unlinkSync(`./public/img/avatars/${req.user.avatar}`);
     }
     return next();

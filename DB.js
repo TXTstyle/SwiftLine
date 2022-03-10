@@ -1,10 +1,9 @@
-const mariadb = require('mariadb');
-const pool = mariadb.createPool({
-    host: 'localhost',
-    user: process.env.user,
-    password: process.env.password,
-    database: process.env.database,
-    connectionLimit: 5
+const {Pool} = require('pg');
+const pool = new Pool({
+    connectionString: process.env.DATABASE_URL,
+    ssl: {
+        rejectUnauthorized: false
+    }
 });
 
 
@@ -16,11 +15,13 @@ async function DB(offset, withFollow, follows) {
     if (!withFollow) {
         withFollowS = '';
     }
-    try {     
-        let conn = await pool.getConnection();
-        let rows = await conn.query(`select f.text, u.username, f.id, f.userId, u.name, u.avatar, f.image from feed f inner join users u on u.id = f.userId${withFollowS} order by f.id desc limit ${(offset-1)*10},${offset*10}`);
+    try {    
+        //console.log(offset); 
+        const conn = await pool.connect();
+        let rows = await conn.query(`select f.text, u.username, f.id, f.userId, u.name, u.avatar, f.image from feed f inner join users u on u.id = f.userId${withFollowS} order by f.id desc limit 10 offset ${(offset-1)*10}`);
         conn.release();
-        return rows;
+        //console.log(rows.rows);
+        return rows.rows;
     } catch (err) {
         throw err;
     }
@@ -28,11 +29,11 @@ async function DB(offset, withFollow, follows) {
 
 async function GetFollows(username) {
     try {     
-        let conn = await pool.getConnection();
+        let conn = await pool.connect();
         let rows = await conn.query(`select follows from users where username='${username}'`);
-        //console.log(rows[0].email);
+        //console.log(rows.rows[0]);
         conn.release();
-        return rows[0];
+        return rows.rows[0];
     } catch (err) {
         throw err;
     }
@@ -40,7 +41,7 @@ async function GetFollows(username) {
 
 async function NewFollow(username, follows) {
     try {     
-        let conn = await pool.getConnection();
+        let conn = await pool.connect();
         let rows = await conn.query(`update users set follows='${follows}' where username='${username}'`);
         //console.log(rows[0].email);
         conn.release();
@@ -52,7 +53,7 @@ async function NewFollow(username, follows) {
 
 async function NewBanner(userId, banner) {
     try {     
-        let conn = await pool.getConnection();
+        let conn = await pool.connect();
         let rows = await conn.query(`update users set banner='${banner}' where id='${userId}'`);
         //console.log(rows[0].email);
         conn.release();
@@ -64,7 +65,7 @@ async function NewBanner(userId, banner) {
 
 async function NewAvatar(userId, avatar) {
     try {     
-        let conn = await pool.getConnection();
+        let conn = await pool.connect();
         let rows = await conn.query(`update users set avatar='${avatar}' where id='${userId}'`);
         //console.log(rows[0].email);
         conn.release();
@@ -76,7 +77,7 @@ async function NewAvatar(userId, avatar) {
 
 async function NewOptions(username, bool) {
     try {     
-        let conn = await pool.getConnection();
+        let conn = await pool.connect();
         let rows = await conn.query(`update users set options='${bool}' where username='${username}'`);
         //console.log(rows[0].email);
         conn.release();
@@ -88,11 +89,11 @@ async function NewOptions(username, bool) {
 
 async function GetUsernames() {
     try {     
-        let conn = await pool.getConnection();
+        let conn = await pool.connect();
         let rows = await conn.query(`SELECT username, id FROM users`);
         //console.log(rows[0].email);
         conn.release();
-        return rows;
+        return rows.rows;
     } catch (err) {
         throw err;
     }
@@ -100,10 +101,10 @@ async function GetUsernames() {
 
 async function GetPostN(userId) {
     try {
-        const conn = await pool.getConnection();
+        const conn = await pool.connect();
         const rows = await conn.query(`select count(userId) c from feed where userId=${userId}`);
         conn.release();
-        return rows[0];
+        return rows.rows[0];
     } catch (err) {
         throw err;
     }
@@ -111,11 +112,11 @@ async function GetPostN(userId) {
 
 async function FindUser(username) {
     try {     
-        let conn = await pool.getConnection();
+        const conn = await pool.connect();
         let rows = await conn.query(`SELECT * FROM users WHERE username = '${username}'`);
-        //console.log(rows[0].email);
+        //console.log(rows.rows[0].follows);
         conn.release();
-        return rows[0];
+        return rows.rows[0];
     } catch (err) {
         throw err;
     }
@@ -123,11 +124,11 @@ async function FindUser(username) {
 
 async function FindUserId(id) {
     try {     
-        let conn = await pool.getConnection();
+        let conn = await pool.connect();
         let rows = await conn.query(`SELECT * FROM users WHERE id = '${id}'`);
         //console.log(rows[0].id);
         conn.release();
-        return rows[0];
+        return rows.rows[0];
     } catch (err) {
         throw err;
     }
@@ -135,9 +136,10 @@ async function FindUserId(id) {
 
 async function NewPost(text, userId, image) {
     try {
-        let conn = await pool.getConnection();
+        let conn = await pool.connect();
         await conn.query(`INSERT INTO feed (text, userId, image) VALUES ('${text}','${userId}','${image}')`);
         conn.release();
+        return;
     } catch (err) {
         throw err;
     }
@@ -146,9 +148,10 @@ async function NewPost(text, userId, image) {
 
 async function NewUser(username, name, password) {
     try {
-        let conn = await pool.getConnection();
+        const conn = await pool.connect();
         await conn.query(`INSERT INTO users (username, name, password) VALUES ('${username}','${name}','${password}')`);
         conn.release();
+        return;
     } catch (err) {
         throw err;
     }
