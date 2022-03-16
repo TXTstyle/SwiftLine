@@ -27,13 +27,10 @@
         <div class="center">
              <div class="top-banner"><h1>New Swift</h1></div>
              <div class="feed">
-                <form class="new-post swift" method="post" enctype="multipart/form-data" action="/new">
+                <form class="new-post swift" method="post" action="/new">
                     <img src="./img/avatars/<%= user.avatar %>" alt="Avatar" class="Avatar">
                     <input type="text" name="text1" id="text1" placeholder="Say something?" required minlength="3" maxlength="250">
                     <input type="submit" value="Swift" class="swift1">
-                    <label class="upload-label"> Upload Image
-                        <input type="file" name="image1" class="file1" required>
-                    </label>
                 </form>
              </div>
         </div>

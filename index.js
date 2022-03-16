@@ -4,9 +4,7 @@ if (process.env.NODE_ENV !== 'production') {
 const PORT = process.env.PORT || 3000
 
 const express = require("express");
-const multer = require('multer')
 const app = express();
-const fs = require('fs');
 
 const bcrypt = require('bcrypt');
 const flash = require('express-flash');
@@ -28,12 +26,6 @@ initialize(passport,
 
 
 const userRouter = require('./routes/user');
-const storage = require('./storage');
-const sharpImg = require('./sharpImg');
-
-const uploadPost = multer({storage: storage('/posts/')})
-const uploadBanner = multer({storage: storage('/banners/')})
-const uploadAvatar = multer({storage: storage('/avatars')})
 
 app.set('view engine', 'ejs');
 app.use(express.static('./public'));
@@ -61,12 +53,11 @@ app.get('/', mw.CheckNoAuth, mw.GetFollow, mw.GetDB, async (req,res) => {
 
 
 // Post
-app.post('/new', uploadPost.single('image1'), async (req, res) => {
+app.post('/new', async (req, res) => {
     const user = await myDB.FindUser(req.user.username);
-    sharpImg.resize(`posts/${req.file.filename}`);
-    console.log(req.body.text1, user.id, req.file.filename);
+    console.log(req.body.text1, user.id);
 
-    await myDB.NewPost(req.body.text1, user.id, req.file.filename)
+    await myDB.NewPost(req.body.text1, user.id)
     res.redirect('/');
 })
 
@@ -81,7 +72,7 @@ app.get('/settings', mw.CheckNoAuth, (req, res) => {
     res.render('./settings', {user: req.user, options: req.user.options});
 })
 
-app.post('/banner', mw.DelBanner, uploadBanner.single('banner1'), async (req, res) => {
+app.post('/banner', async (req, res) => {
     const user = await myDB.FindUser(req.user.username);
     sharpImg.cropBanner(`banners/${req.file.filename}`);
 
@@ -89,9 +80,8 @@ app.post('/banner', mw.DelBanner, uploadBanner.single('banner1'), async (req, re
     res.redirect('/');
 })
 
-app.post('/avatar', mw.DelAvatar, uploadAvatar.single('avatar1'), async (req, res) => {
+app.post('/avatar', async (req, res) => {
     const user = await myDB.FindUser(req.user.username);
-    sharpImg.cropAvatar(`avatars/${req.file.filename}`);
 
     await myDB.NewAvatar(user.id, req.file.filename)
     res.redirect('/');

@@ -55,18 +55,4 @@ async function GetFollow(req, res, next) {
     return next();
 }
 
-function DelBanner(req, res, next) {
-    if (req.user.banner != 'banner.svg') {
-        fs.unlinkSync(`./public/img/banners/${req.user.banner}`);
-    }
-    return next();
-}
-
-function DelAvatar(req, res, next) {
-    if (req.user.avatar != 'avatar.svg') {
-        fs.unlinkSync(`./public/img/avatars/${req.user.avatar}`);
-    }
-    return next();
-}
-
-module.exports = {CheckAuth, CheckNoAuth, GetDB, GetFollow, GetUserPosts, DelBanner, DelAvatar};
+module.exports = {CheckAuth, CheckNoAuth, GetDB, GetFollow, GetUserPosts};

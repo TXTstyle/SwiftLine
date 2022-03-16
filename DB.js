@@ -18,7 +18,7 @@ async function DB(offset, withFollow, follows) {
     try {    
         //console.log(offset); 
         const conn = await pool.connect();
-        let rows = await conn.query(`select f.text, u.username, f.id, f.userId, u.name, u.avatar, f.image from feed f inner join users u on u.id = f.userId${withFollowS} order by f.id desc limit 10 offset ${(offset-1)*10}`);
+        let rows = await conn.query(`select f.text, u.username, f.id, f.userId, u.name, u.avatar from feed f inner join users u on u.id = f.userId${withFollowS} order by f.id desc limit 10 offset ${(offset-1)*10}`);
         conn.release();
         //console.log(rows.rows);
         return rows.rows;
@@ -134,10 +134,10 @@ async function FindUserId(id) {
     }
 } 
 
-async function NewPost(text, userId, image) {
+async function NewPost(text, userId) {
     try {
         let conn = await pool.connect();
-        await conn.query(`INSERT INTO feed (text, userId, image) VALUES ('${text}','${userId}','${image}')`);
+        await conn.query(`INSERT INTO feed (text, userId) VALUES ('${text}','${userId}')`);
         conn.release();
         return;
     } catch (err) {
