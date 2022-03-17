@@ -27,6 +27,18 @@ async function DB(offset, withFollow, follows) {
     }
 } 
 
+async function GetFollowsPage(offset) {
+    try {     
+        let conn = await pool.connect();
+        let rows = await conn.query(`select username, id, name, avatar from users order by id desc limit 10 offset ${(offset-1)*10}`);
+        //console.log(rows.rows[0]);
+        conn.release();
+        return rows.rows;
+    } catch (err) {
+        throw err;
+    }
+}
+
 async function GetFollows(username) {
     try {     
         let conn = await pool.connect();
@@ -157,4 +169,4 @@ async function NewUser(username, name, password) {
     }
 }
 
-module.exports = {DB, GetUsernames, FindUser, FindUserId, GetPostN, GetFollows, NewPost, NewUser, NewFollow, NewBanner, NewAvatar, NewOptions};
+module.exports = {DB, GetUsernames, FindUser, FindUserId, GetPostN, GetFollows, NewPost, NewUser, NewFollow, NewBanner, NewAvatar, NewOptions, GetFollowsPage};

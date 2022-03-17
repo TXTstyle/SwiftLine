@@ -26,7 +26,7 @@
             <div class="nav-list">
                 <a href="/">Home</a>
                 <a href="">Follow</a>
-                <a href="">About</a>
+                <a href="/about">About</a>
                 <a href="/settings">Settings</a>
             </div>
             <a href="/user/<%= user.username %> "><img src="./img/avatars/<%= user.avatar %> " alt="Avatar" class="Avatar avatar-left"></a>
@@ -40,16 +40,38 @@
                    </label>
                    <input type="submit" value="Save" class="swift1">
                 </form>
-                <form class="new-post swift settings" method="post" enctype="multipart/form-data" action="/avatar">
-                    <label class="upload-label"> Upload Avatar
-                        <input type="file" name="avatar1" class="file1">
-                    </label>
+                <form class="new-post swift settings" method="POST" action="/avatar">
+                    <div>
+                        <label> 
+                            <input type="radio" name="avatar" value="avatar.svg" class="file1">
+                            <img src="img/avatars/avatar.svg" alt="">
+                        </label>
+                        <label> 
+                            <input type="radio" name="avatar" value="avatar2.svg" class="file1">
+                            <img src="img/avatars/avatar2.svg" alt="">
+                        </label>
+                        <label> 
+                            <input type="radio" name="avatar" value="avatar3.svg" class="file1">
+                            <img src="img/avatars/avatar3.svg" alt="">
+                        </label>
+                    </div>
                     <input type="submit" value="Save" class="swift1">
                 </form>
-                <form class="new-post swift settings" method="post" enctype="multipart/form-data" action="/banner">
-                    <label class="upload-label"> Upload Banner
-                        <input type="file" name="banner1" class="file1">
-                    </label>
+                <form class="new-post swift settings" method="post" action="/banner">
+                    <div class="banner">
+                        <label class="bannerOf"> 
+                            <input type="radio" name="banner" value="banner.svg" class="file1">
+                            <img src="img/banners/banner.svg" alt="">
+                        </label>
+                        <label class="bannerOf"> 
+                            <input type="radio" name="banner" value="banner2.svg" class="file1">
+                            <img src="img/banners/banner2.svg" alt="">
+                        </label>
+                        <label class="bannerOf"> 
+                            <input type="radio" name="banner" value="banner3.svg" class="file1">
+                            <img src="img/banners/banner3.svg" alt="">
+                        </label>
+                    </div>
                     <input type="submit" value="Save" class="swift1">
                 </form>
              </div>

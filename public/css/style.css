@@ -202,8 +202,8 @@ body {
     height: 32px;
     display: flex;
     align-items: center;
-    padding: .25rem;
-    font-size: 18px;
+    padding: 0.5rem;
+    font-size: 22px;
 }
 
 .post-img {
@@ -325,6 +325,15 @@ body {
     color: var(--dark-color);
 }
 
+.settings div {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1em;
+    align-content: center;
+    justify-content: center;
+    width: 100%;
+}
+
 .swift {
     flex-wrap: wrap;
     justify-content: flex-start;
@@ -333,7 +342,8 @@ body {
 }
 
 .file1 {
-    display: none;
+    position: absolute;
+    left: -99999px;
 }
 
 .upload-label {
@@ -343,13 +353,32 @@ body {
     border-radius: 1.5rem;
     border: none;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-    padding: 1rem;
-    margin: 0 2rem;
+    padding: .4rem;
 }
 
 .upload-label:hover {
     background-color: var(--dark-color);
     cursor: pointer;
+}
+
+input[type=radio] + img {
+    font-size: 16px;
+    font-weight: 400;
+    background-color: var(--primary-color);
+    border-radius: 1.5rem;
+    border: none;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    padding: .4rem;
+}
+
+input[type=radio]:hover + img {
+    background-color: var(--dark-color);
+    cursor: pointer;
+}
+
+input[type=radio]:checked + img{
+    background-color: var(--dark-color);
+    border: 1px solid var(--dark-color);
 }
 
 #text1 {
@@ -377,6 +406,10 @@ body {
 
 .banner {
     flex-direction: column;
+}
+
+.bannerOf {
+    margin-left: -156px;
 }
 
 #banner {

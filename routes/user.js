@@ -31,7 +31,7 @@ router.get('/:user', mw.CheckNoAuth, mw.GetUserPosts, mw.GetDB, async (req, res)
         const N = {
         }
         
-        res.render('../views/user', {posts: res.posts, user: user, following: isFollowing, mainUser: req.user, options: req.user.options})   
+        res.render('../views/user', {posts: res.posts, user: user, following: isFollowing, mainUser: req.user, options: req.user.options, qr: req.qr})   
     }else {
         req.flash('error', 'Not a username.');
         res.redirect('/');

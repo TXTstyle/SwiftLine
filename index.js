@@ -48,8 +48,18 @@ app.use('/user', userRouter)
 
 //  Root
 app.get('/', mw.CheckNoAuth, mw.GetFollow, mw.GetDB, async (req,res) => { 
-    res.render('./index', {posts: res.posts, user: req.user, options: req.user.options})
+    res.render('./index', {posts: res.posts, user: req.user, options: req.user.options, qr: req.qr})
 });
+
+//  FollowPage
+app.get('/follow', mw.CheckNoAuth, mw.GetFollow, mw.GetFP, async (req,res) => { 
+    res.render('./follow', {posts: res.posts, user: req.user, options: req.user.options, qr: req.qr})
+});
+
+// About
+app.get('/about', mw.CheckNoAuth, mw.GetFollow, mw.GetDB, (req, res) => {
+    res.render('./about', {user: req.user, options: req.user.options});
+})
 
 
 // Post
@@ -74,16 +84,15 @@ app.get('/settings', mw.CheckNoAuth, (req, res) => {
 
 app.post('/banner', async (req, res) => {
     const user = await myDB.FindUser(req.user.username);
-    sharpImg.cropBanner(`banners/${req.file.filename}`);
-
-    await myDB.NewBanner(user.id, req.file.filename)
+    //console.log(user.id, req.body.banner)
+    await myDB.NewBanner(user.id, req.body.banner)
     res.redirect('/');
 })
 
 app.post('/avatar', async (req, res) => {
     const user = await myDB.FindUser(req.user.username);
-
-    await myDB.NewAvatar(user.id, req.file.filename)
+    //console.log(user.id, req.body.avatar)
+    await myDB.NewAvatar(user.id, req.body.avatar)
     res.redirect('/');
 })
 
