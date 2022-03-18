@@ -9,11 +9,14 @@
     <link rel="icon" href="img/favicon.ico" sizes="any" type="image/x-icon">
     <% if(options == true) { %> 
         <script src="./js/dark.js" defer></script>
-        <% } %>
+        <% } else { %>
+            <script src="./js/options.js"></script>
+            <% } %> 
 </head>
 <body>
     <div class="body">
-        <div><div class="left-side"> <a href="./">
+        <div> <img src="./img/menu.svg" alt="menu" id="openTab" onclick="openTab('.left-side','nav-list')">
+            <div class="left-side"> <a href="./">
             <svg viewbox="0 0 96 96" xmlns="http://www.w3.org/2000/svg"> 
                 <g>
                  <title>Layer 1</title>

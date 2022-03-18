@@ -4,16 +4,19 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SwiftLine: About</title>
+    <title>SwiftLine: Follow</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="icon" href="img/favicon.ico" sizes="any" type="image/x-icon">
     <% if(options == true) { %> 
         <script src="./js/dark.js" defer></script>
-        <% } %>
+        <% } else { %>
+            <script src="./js/options.js"></script>
+            <% } %> 
 </head>
 <body>
     <div class="body">
-        <div><div class="left-side"> <a href="./">
+        <div> <img src="./img/menu.svg" alt="menu" id="openTab" onclick="openTab('.left-side','nav-list')">
+            <div class="left-side"> <a href="./">
             <svg viewbox="0 0 96 96" xmlns="http://www.w3.org/2000/svg"> 
                 <g>
                  <title>Layer 1</title>
@@ -42,7 +45,8 @@
                 <% } %>
              </div>
         </div>
-        <div><div class="right-side">
+        <div> <img src="./img/search.svg" alt="search" id="openSearch" onclick="openTab('.right-side')">
+            <div class="right-side">
             <div class="search">
                 <form action="/user/s" method="post">
                     <input type="text" name="search" id="search-input" placeholder="Search" required minlength="3" maxlength="15">
